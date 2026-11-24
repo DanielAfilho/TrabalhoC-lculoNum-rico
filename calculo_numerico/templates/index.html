@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cálculo Numérico</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav>
+    <h1>Cálculo Numérico</h1>
+    {% for grupo, itens in grupos.items() %}
+      <h2>{{ grupo }}</h2>
+      {% for chave, titulo, _ in itens %}<button data-alvo="{{ chave }}">{{ titulo }}</button>{% endfor %}
+    {% endfor %}
+  </nav>
+  <main>
+    <p id="inicio">Escolha um método ao lado.<br>
+      Funções: use x, <code>**</code> ou <code>^</code>, sin, cos, exp, log, sqrt, pi. Listas: números separados por espaço.</p>
+    {% for grupo, itens in grupos.items() %}{% for chave, titulo, campos in itens %}
+    <form data-chave="{{ chave }}" hidden>
+      <h2>{{ titulo }}</h2>
+      {% for nome, rotulo, padrao in campos %}
+      <label>{{ rotulo }}
+        {% if nome == "A" %}<textarea name="A" rows="3">{{ padrao }}</textarea>
+        {% else %}<input name="{{ nome }}" value="{{ padrao }}">{% endif %}
+      </label>
+      {% endfor %}
+      <button class="calcular">Calcular</button>
+    </form>
+    {% endfor %}{% endfor %}
+    <section id="saida"></section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
